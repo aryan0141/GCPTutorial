@@ -6,7 +6,7 @@ from google.cloud import language
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"Google Vision API Key.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"Google_Vision_API_Key.json"
 
 
 def index(request):
