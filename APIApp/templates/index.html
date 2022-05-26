@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Google Cloud APIs</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">GCP Tutorial</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled">Disabled</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sentiment Analysis -->
+    <section
+      id="sentimentAnalysis"
+      class="container my-3"
+      style="display: flex"
+    >
+      <div style="width: 100%; margin-right: 10px">
+        <form method="POST" id="sentimentAnalysisForm">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="sentimentAnalysisTextarea" class="form-label"
+              >1. Sentiment Analysis</label
+            >
+            <textarea
+              class="form-control"
+              id="sentimentAnalysisTextarea"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mb-3" id="sentimentAnalysisBtn">Submit</button>
+        </form>
+      </div>
+      <div class="mb-3" style="width: 100%">
+        <label for="sentimentAnalysisTextareaOutput" class="form-label"
+          >Output</label
+        >
+        <textarea
+          class="form-control"
+          id="sentimentAnalysisTextareaOutput"
+          rows="5"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- English to French -->
+    <section id="engToHin" class="container my-3" style="display: flex">
+      <div style="width: 100%; margin-right: 10px">
+        <form method="POST" id="engToFrenchForm">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="engToFrenchTextarea" class="form-label"
+              >2. English to French</label
+            >
+            <textarea
+              class="form-control"
+              id="engToFrenchTextarea"
+              rows="5"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mb-3" id="engToFrenchBtn">Submit</button>
+        </form>
+      </div>
+      <div class="mb-3" style="width: 100%">
+        <label for="engToFrenchTextareaOutput" class="form-label">Output</label>
+        <textarea
+          class="form-control"
+          id="engToFrenchTextareaOutput"
+          rows="5"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="bottom: 0; left: 0; position: absolute; width: 100%; padding: 4px; font-weight: 600; background-color: rgb(245, 245, 245);text-align: center; font-size: 0.9rem;">
+      <p style="margin: auto;">No Copyright | Just for Educational Purposes</p>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- English To French -->
+    <script>
+      $(document).on("submit", "#engToFrenchForm", function (e) {
+        e.preventDefault();
+        $("#engToFrenchBtn").addClass("disabled");
+        $("#engToFrenchBtnTextareaOutput").val("");
+        $.ajax({
+          type: "POST",
+          url: "/englishToFrench",
+          data: {
+            engText: $("#engToFrenchTextarea").val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          },
+          success: function (data) {
+            $("#engToFrenchTextareaOutput").val(data);
+            $("#engToFrenchBtn").removeClass("disabled");
+          },
+        });
+      });
+    </script>
+
+    <!-- Sentiment Analysis -->
+    <script>
+      $(document).on("submit", "#sentimentAnalysisForm", function (e) {
+        e.preventDefault();
+        sentimentAnalysisBtn
+        $("#sentimentAnalysisBtn").addClass("disabled");
+        $("#sentimentAnalysisTextareaOutput").val("");
+        $.ajax({
+          type: "POST",
+          url: "/sentimentAnalysis",
+          data: {
+            text: $("#sentimentAnalysisTextarea").val(),
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          },
+          success: function (data) {
+            $("#sentimentAnalysisTextareaOutput").val(data);
+            $("#sentimentAnalysisBtn").removeClass("disabled");
+          },
+        });
+      });
+    </script>
+
+  </body>
+</html>
